@@ -1,0 +1,242 @@
+<title>Agendas Rio Radical</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800;900&display=swap">
+<style>
+/* Layout: cabeçalho de marca em verde, abas de agenda, finais de semana em linhas com bloco de data à esquerda. */
+:root{
+  --bg:#F6F3EB; --surface:#FFFFFF; --fg:#0D3014; --muted:#4A6350; --line:#D8D3C2;
+  --accent:#B9520A; --gold:#F2B005; --on-gold:#0D3014;
+  --brand:#0D3014; --on-brand:#F6F3EB; --brand-soft:#1E4A28;
+  --cta:#E8740C; --on-cta:#FFFFFF;
+  --font:'Montserrat',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0A1F0F; --surface:#123119; --fg:#F6F3EB; --muted:#A9BDAB; --line:#26442C;
+    --accent:#F2A03C; --brand:#06150A; --brand-soft:#1E4A28; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0A1F0F; --surface:#123119; --fg:#F6F3EB; --muted:#A9BDAB; --line:#26442C;
+  --accent:#F2A03C; --brand:#06150A; --brand-soft:#1E4A28; color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--font);font-size:16px;line-height:1.45;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0}
+.wrap{max-width:760px;margin:0 auto}
+a{color:inherit}
+header{background:var(--brand);color:var(--on-brand);margin-inline:calc(-1 * max(16px,env(safe-area-inset-left,0px)));
+  padding:28px max(16px,env(safe-area-inset-left,0px)) 26px;border-bottom:4px solid var(--cta)}
+header .in{max-width:760px;margin:0 auto}
+.kicker{font-weight:700;font-size:13px;letter-spacing:.38em;color:var(--gold);text-transform:uppercase}
+h1{margin:10px 0 6px;font-size:clamp(34px,8vw,52px);font-weight:900;line-height:1;letter-spacing:-.01em;text-wrap:balance}
+h1 span{color:var(--gold)}
+.sub{margin:0 0 18px;font-weight:500;color:#D6DFD3;max-width:46ch}
+.site{display:inline-flex;align-items:center;gap:8px;background:var(--cta);color:var(--on-cta);text-decoration:none;
+  font-weight:800;padding:12px 18px;border-radius:999px;font-size:15px}
+.site:focus-visible,.tab:focus-visible,.btn:focus-visible,.wa:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+nav{display:flex;flex-wrap:wrap;gap:8px;margin:22px 0 8px}
+.tab{font:inherit;font-weight:700;font-size:14px;padding:10px 16px;border-radius:999px;border:2px solid var(--fg);
+  background:transparent;color:var(--fg);cursor:pointer}
+.tab[aria-selected="true"]{background:var(--fg);color:var(--bg)}
+.panel{padding-block:8px 8px}
+.lead{margin:14px 0 18px;color:var(--muted);font-weight:500;max-width:60ch}
+.group{display:grid;grid-template-columns:92px 1fr;gap:14px;padding:16px 0;border-top:1px solid var(--line)}
+.gdate{display:flex;flex-direction:column;align-items:flex-start}
+.gdate b{font-size:30px;font-weight:900;line-height:1;color:var(--accent);font-variant-numeric:tabular-nums}
+.gdate small{font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-top:6px}
+.events{display:flex;flex-direction:column;gap:8px;min-width:0}
+.ev{display:flex;gap:12px;align-items:flex-start;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 14px;min-width:0}
+.ev .d{flex:none;background:var(--gold);color:var(--on-gold);font-weight:800;font-size:12px;letter-spacing:.04em;
+  padding:5px 9px;border-radius:999px;margin-top:1px;font-variant-numeric:tabular-nums;white-space:nowrap}
+.ev .n{font-weight:700;min-width:0;overflow-wrap:anywhere}
+.ev .t{display:block;font-weight:600;font-size:13px;color:var(--accent);margin-top:2px}
+.ev.past{opacity:.5}
+.ev.past .t::after{content:" · realizado"}
+.ev.star{border-color:var(--cta);border-width:2px}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:12px;margin-top:6px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:6px;min-width:0}
+.card h3{margin:0;font-size:18px;font-weight:800;line-height:1.2;text-wrap:balance}
+.card .when{font-weight:700;color:var(--accent);font-variant-numeric:tabular-nums}
+.card .price{font-weight:600;color:var(--muted);font-size:14px}
+.card .price b{color:var(--fg);font-size:20px;font-weight:800}
+.card .soon{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.card .note{font-size:13px;color:var(--muted);margin:2px 0 0}
+.daily{list-style:none;margin:6px 0 0;padding:0;display:grid;gap:8px}
+.daily li{background:var(--surface);border:1px solid var(--line);border-left:6px solid var(--cta);border-radius:10px;padding:12px 14px;font-weight:700}
+.cta{margin:26px 0 0;padding:20px;border-radius:16px;background:var(--brand);color:var(--on-brand);display:flex;flex-wrap:wrap;gap:14px;align-items:center;justify-content:space-between}
+.cta p{margin:0;font-weight:700;max-width:34ch}
+.cta p small{display:block;font-weight:500;color:#C8D5C6;margin-top:4px}
+footer{padding:28px 0 96px;color:var(--muted);font-size:13px}
+.hbtns{display:flex;flex-wrap:wrap;gap:10px}
+.wabtn{display:inline-flex;align-items:center;gap:8px;background:#1FA855;color:#fff;text-decoration:none;font-weight:800;padding:12px 18px;border-radius:999px;font-size:15px}
+.wabtn svg{width:18px;height:18px;flex:none}
+.wabtn:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.wafloat{position:fixed;right:max(16px,env(safe-area-inset-right,0px));bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:20;box-shadow:0 6px 18px rgba(0,0,0,.35)}
+.contacts{display:grid;gap:10px;margin:0 0 16px}
+.crow{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.crow .lab{font-weight:700;color:var(--fg);min-width:78px}
+.crow .val{font-weight:600;user-select:all;overflow-wrap:anywhere}
+.btn,.wa{font:inherit;font-size:12px;font-weight:700;padding:6px 12px;border-radius:999px;border:1.5px solid var(--fg);background:transparent;color:var(--fg);cursor:pointer;text-decoration:none}
+.msg{font-size:12px;color:var(--accent);font-weight:600}
+@media (max-width:420px){.group{grid-template-columns:1fr;gap:8px}.gdate{flex-direction:row;align-items:baseline;gap:10px}.gdate small{margin-top:0}}
+@media (prefers-reduced-motion:no-preference){.panel{animation:in .25s ease-out}@keyframes in{from{opacity:.0}to{opacity:1}}}
+</style>
+
+<header>
+  <div class="in">
+    <div class="kicker">Rio Radical</div>
+    <h1>Agendas <span>Rio Radical</span></h1>
+    <p class="sub">Rapel, trilhas e expedições com saída marcada. Vagas limitadas em cada evento.</p>
+    <div class="hbtns">
+      <a class="site" href="https://www.rioradical.rio.br" target="_blank" rel="noopener">www.rioradical.rio.br &rarr;</a>
+      <a class="wabtn" href="https://wa.me/5521981639455?text=Ol%C3%A1!%20Vi%20a%20agenda%20da%20Rio%20Radical%20e%20quero%20reservar." target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.200zm4.5-6.1c-.2-.1-1.500-.7-1.700-.8s-.4-.1-.6.1-.6.8-.8 1-.3.2-.5.1a6.700 6.700 0 0 1-3.300-2.900c-.2-.4.2-.4.700-1.300.1-.1 0-.3 0-.4l-.8-1.800c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.200 5.200 5.200 0 0 0 1.100 2.800 11.900 11.900 0 0 0 4.600 4c1.700.7 2.400.8 3.200.7a2.800 2.800 0 0 0 1.800-1.300 2.200 2.200 0 0 0 .2-1.300c-.1-.1-.3-.2-.5-.3z"/></svg>Chamar no WhatsApp</a>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+  <nav role="tablist" aria-label="Agendas" id="tabs"></nav>
+  <main id="view"></main>
+
+  <div class="cta">
+    <p>Reserve sua vaga pelo site ou chame no WhatsApp.<small>Descontos exclusivos para cariocas e aniversariantes.</small></p>
+    <a class="site" href="https://www.rioradical.rio.br" target="_blank" rel="noopener">Reservar no site</a>
+  </div>
+
+  <footer>
+    <div class="contacts">
+      <div class="crow"><span class="lab">Site</span><a class="val" href="https://www.rioradical.rio.br" target="_blank" rel="noopener">www.rioradical.rio.br</a></div>
+      <div class="crow"><span class="lab">WhatsApp</span><span class="val" id="ph">+55 21 98163-9455</span>
+        <a class="wa" href="https://wa.me/5521981639455" target="_blank" rel="noopener">Abrir conversa</a>
+        <button class="btn" type="button" data-copy="ph">Copiar</button></div>
+      <div class="crow"><span class="lab">E-mail</span><span class="val" id="em">contato@rioradical.tur.br</span>
+        <button class="btn" type="button" data-copy="em">Copiar</button></div>
+      <span class="msg" id="msg" role="status"></span>
+    </div>
+    Rio Radical Experiências Turísticas Ltda · CNPJ 69.278.674/0001-59
+  </footer>
+</div>
+
+<a class="wabtn wafloat" href="https://wa.me/5521981639455?text=Ol%C3%A1!%20Vi%20a%20agenda%20da%20Rio%20Radical%20e%20quero%20reservar." target="_blank" rel="noopener" aria-label="Chamar no WhatsApp"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.200zm4.5-6.1c-.2-.1-1.500-.7-1.700-.8s-.4-.1-.6.1-.6.8-.8 1-.3.2-.5.1a6.700 6.700 0 0 1-3.300-2.900c-.2-.4.2-.4.700-1.300.1-.1 0-.3 0-.4l-.8-1.800c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.200 5.200 5.200 0 0 0 1.100 2.800 11.900 11.900 0 0 0 4.600 4c1.700.7 2.400.8 3.200.7a2.800 2.800 0 0 0 1.800-1.300 2.200 2.200 0 0 0 .2-1.300c-.1-.1-.3-.2-.5-.3z"/></svg>WhatsApp</a>
+
+<script>
+/* ---------- Dados ---------- */
+var AGENDA = {
+  novembro: { label:'Novembro', title:'Novembro 2026',
+    lead:'Cinco finais de semana de eventos. Em 14 e 15/11 a Rio Radical comemora 11 anos com a Expedição Praia do Aventureiro.',
+    groups:[
+      { ev:[ ['2026-11-01','Trilha e Rapel ao Amanhecer no Morro Dois Irmãos'], ['2026-11-01','Ilha de Palmas – Passeio de Lancha'] ] },
+      { ev:[ ['2026-11-07','Rapel no Rosto do Imperador'], ['2026-11-08','Rapel na Cachoeira da Macumba'] ] },
+      { ev:[ ['2026-11-14','Expedição Praia do Aventureiro','Luau na praia · 11 anos Rio Radical','2026-11-15'] ], star:true },
+      { ev:[ ['2026-11-21','Rapel e Pêndulo na Pedra da Tartaruga'], ['2026-11-22','Rapel na Pedra do Pontal'] ] },
+      { ev:[ ['2026-11-28','Rapel na Enseada do Bananal'], ['2026-11-29','Trilha e Rapel ao Amanhecer no Morro Dois Irmãos'] ] }
+    ]},
+  dezembro: { label:'Dezembro', title:'Dezembro 2026',
+    lead:'Doze eventos em quatro finais de semana, de 05 a 27/12.',
+    groups:[
+      { ev:[ ['2026-12-05','Rapel e Pêndulo na Pedra da Tartaruga'], ['2026-12-06','Rapel no Balão'] ] },
+      { ev:[ ['2026-12-12','Trilha e Rapel ao Amanhecer no Morro Dois Irmãos'], ['2026-12-12','Mergulho em Arraial'], ['2026-12-13','Rapel na Cachoeira do Garrafão'] ] },
+      { ev:[ ['2026-12-19','Rapel na Enseada do Bananal'], ['2026-12-20','Rapel na Cachoeira do Mendanha'], ['2026-12-20','Bate e Volta na Serrinha do Alambari'] ] },
+      { ev:[ ['2026-12-26','Rapel e Pêndulo na Pedra da Tartaruga'], ['2026-12-26','Ilha de Palmas – Passeio de Lancha'], ['2026-12-27','Trilha e Rapel ao Amanhecer no Morro Dois Irmãos'], ['2026-12-27','Rapel na Cachoeira da Macumba'] ] }
+    ]}
+};
+var EXPED = [
+  { n:'São Thomé das Letras', s:'2027-04-16', p:1100 },
+  { n:'Chapada dos Veadeiros', s:'2027-05-27', p:2990 },
+  { n:'Imersão nos Lençóis Maranhenses', s:'2027-06-17', e:'2027-06-21', p:3499, note:'Quem reservar em 2026 pode parcelar no PIX até maio de 2027.' },
+  { n:'Ibitipoca', s:'2027-07-30', p:1100 },
+  { n:'Chapada das Mesas', s:'2027-09-03', p:2990 }
+];
+var DAILY = ['Day Use Angra dos Reis','Passeio para Ilha da Gigóia','Passeio de Veleiro','Passeio de Jetski',
+  'Trilhas: Pedra do Telégrafo, Pedra da Gávea, Pedra Bonita, Morro Dois Irmãos','Tour pelo RJ','Voo de Helicóptero',
+  'Voo de Asa Delta e Parapente','Voo de Parasail'];
+var TABS = [['novembro','Novembro'],['dezembro','Dezembro'],['expedicoes','Expedições'],['todos-os-dias','Todos os dias']];
+
+/* ---------- Datas ---------- */
+var WD = ['DOM','SEG','TER','QUA','QUI','SEX','SÁB'];
+var MON = ['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'];
+function parse(s){ var p=s.split('-'); return new Date(+p[0], +p[1]-1, +p[2]); }
+function pad(n){ return (n<10?'0':'')+n; }
+function today(){ var t=new Date(); return new Date(t.getFullYear(), t.getMonth(), t.getDate()); }
+function dm(s){ var d=parse(s); return pad(d.getDate())+'/'+pad(d.getMonth()+1); }
+function chip(ev){
+  var d=parse(ev[0]);
+  var txt = WD[d.getDay()]+' '+pad(d.getDate())+'/'+pad(d.getMonth()+1);
+  if(ev[3]){ var e=parse(ev[3]); txt = WD[d.getDay()]+'-'+WD[e.getDay()]+' '+pad(d.getDate())+'–'+pad(e.getDate())+'/'+pad(d.getMonth()+1); }
+  return txt;
+}
+function esc(s){ return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); }
+
+/* ---------- Telas ---------- */
+function groupHead(g){
+  var first=parse(g.ev[0][0]), last=parse(g.ev[g.ev.length-1][3]||g.ev[g.ev.length-1][0]);
+  var a=first.getDate(), b=last.getDate();
+  var big = a===b ? pad(a) : pad(a)+'–'+pad(b);
+  var sm = a===b ? WD[first.getDay()]+' · '+MON[first.getMonth()] : 'Fim de semana · '+MON[first.getMonth()];
+  return '<div class="gdate"><b>'+big+'</b><small>'+sm+'</small></div>';
+}
+function renderMonth(key){
+  var m=AGENDA[key], t=today(), h='<section class="panel"><h2 style="margin:6px 0 0;font-size:24px;font-weight:800">'+m.title+'</h2><p class="lead">'+esc(m.lead)+'</p>';
+  m.groups.forEach(function(g){
+    h+='<div class="group">'+groupHead(g)+'<div class="events">';
+    g.ev.forEach(function(ev){
+      var end=parse(ev[3]||ev[0]), past=end<t;
+      h+='<div class="ev'+(past?' past':'')+(g.star?' star':'')+'"><span class="d">'+chip(ev)+'</span><span class="n">'+esc(ev[1])+
+         (ev[2]?'<span class="t">'+esc(ev[2])+'</span>':(past?'<span class="t"></span>':''))+'</span></div>';
+    });
+    h+='</div></div>';
+  });
+  return h+'</section>';
+}
+function renderExped(){
+  var t=today(), h='<section class="panel"><h2 style="margin:6px 0 0;font-size:24px;font-weight:800">Próximas expedições</h2><p class="lead">Cinco expedições abertas entre abril e setembro de 2027.</p><div class="cards">';
+  EXPED.forEach(function(x){
+    var s=parse(x.s), days=Math.round((s-t)/86400000);
+    var when = x.e ? WD[s.getDay()]+' '+pad(s.getDate())+'–'+pad(parse(x.e).getDate())+'/'+pad(s.getMonth()+1)+'/'+s.getFullYear()
+                   : WD[s.getDay()]+' '+dm(x.s)+'/'+s.getFullYear();
+    h+='<article class="card"><span class="soon">'+(days>0?'Em '+days+' dias':'Em andamento')+'</span><h3>'+esc(x.n)+'</h3><div class="when">'+when+'</div>'+
+       '<div class="price">a partir de <b>R$ '+x.p.toLocaleString('pt-BR')+'</b> por pessoa</div>'+(x.note?'<p class="note">'+esc(x.note)+'</p>':'')+'</article>';
+  });
+  return h+'</div></section>';
+}
+function renderDaily(){
+  var h='<section class="panel"><h2 style="margin:6px 0 0;font-size:24px;font-weight:800">Disponíveis todos os dias</h2><p class="lead">Nove atividades com saída diária, de aventura a passeios pelo Rio. Estas e outras estão no site.</p><ul class="daily">';
+  DAILY.forEach(function(x){ h+='<li>'+esc(x)+'</li>'; });
+  return h+'</ul></section>';
+}
+
+/* ---------- Navegação por hash ---------- */
+function firstOpenTab(){
+  var t=today();
+  for(var i=0;i<2;i++){ var k=TABS[i][0], ok=AGENDA[k].groups.some(function(g){return g.ev.some(function(ev){return parse(ev[3]||ev[0])>=t;});}); if(ok) return k; }
+  return 'dezembro';
+}
+function show(key){
+  var valid=TABS.some(function(x){return x[0]===key;}); if(!valid) key=firstOpenTab();
+  var v=document.getElementById('view');
+  v.innerHTML = AGENDA[key] ? renderMonth(key) : key==='expedicoes' ? renderExped() : renderDaily();
+  Array.prototype.forEach.call(document.querySelectorAll('.tab'),function(b){ b.setAttribute('aria-selected', b.dataset.k===key ? 'true':'false'); });
+}
+var nav=document.getElementById('tabs');
+TABS.forEach(function(x){
+  var b=document.createElement('button'); b.className='tab'; b.type='button'; b.setAttribute('role','tab'); b.dataset.k=x[0]; b.textContent=x[1];
+  b.addEventListener('click',function(){ try{ location.hash=x[0]; }catch(e){} show(x[0]); });
+  nav.appendChild(b);
+});
+window.addEventListener('hashchange',function(){ show((location.hash||'').replace('#','')); });
+show((location.hash||'').replace('#',''));
+
+/* ---------- Copiar contatos ---------- */
+Array.prototype.forEach.call(document.querySelectorAll('[data-copy]'),function(b){
+  b.addEventListener('click',function(){
+    var el=document.getElementById(b.dataset.copy), msg=document.getElementById('msg');
+    function sel(){ var r=document.createRange(); r.selectNodeContents(el); var s=window.getSelection(); s.removeAllRanges(); s.addRange(r); msg.textContent='Selecionado. Copie com o menu do aparelho.'; }
+    try{
+      navigator.clipboard.writeText(el.textContent).then(function(){ msg.textContent='Copiado.'; },sel);
+    }catch(e){ sel(); }
+  });
+});
+</script>
